@@ -8,6 +8,10 @@ import java.security.NoSuchAlgorithmException;
 public class FileHash {
     private Path path;
     private String hash;
+    public FileHash(Path path, String hash){
+        this.path=path;
+        this.hash=hash;
+    }
     public FileHash(Path path) throws NoSuchAlgorithmException, IOException{
         this.path=path;
         this.makeHash();

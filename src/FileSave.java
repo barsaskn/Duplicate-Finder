@@ -23,7 +23,7 @@ public class FileSave{
         for(FileHash fileHash : arrayList){
             FileWriter fileWriter = new FileWriter(file, true);
             BufferedWriter bWriter = new BufferedWriter(fileWriter);
-            bWriter.write(fileHash.getPath().toString()+"-"+fileHash.getHash()+"\n");
+            bWriter.write(fileHash.getPath().toString()+"*"+fileHash.getHash()+"\n");
             bWriter.close();
         }
     }
