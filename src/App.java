@@ -3,11 +3,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class App {
     public static void main(String[] args) throws Exception {
+        String pathName=JOptionPane.showInputDialog("Enter a path");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a path: ");
-        String pathName = scanner.nextLine();
+        //System.out.println("Enter a path: ");
+        //String pathName = scanner.nextLine();
         FileFinder fileFinder = new FileFinder(pathName);
         List<Path> list1 = new ArrayList<Path>();
         fileFinder.getAllDirectory();
@@ -16,33 +19,36 @@ public class App {
         for (Path path : list1) {
             filehashList.add(new FileHash(path)); //filehashList
         }
-        System.out.println("1-Write SAVE for save files to secure place\n2-Write CHECK check duplicate files\n3. Write BACKUP to see changed files from last save");
         while(true){
-            String choose = scanner.nextLine();
+            String choose = JOptionPane.showInputDialog("1-Write SAVE for save files to secure place\n2-Write CHECK check duplicate files\n3. Write BACKUP to see changed files from last save");
             if(choose.equals("CHECK")){
                 FileDuplicate fileDuplicate = new FileDuplicate(filehashList);
                 fileDuplicate.getDuplicates();
                 ArrayList<FileHash> duplicatelist=fileDuplicate.getResult();
                 if(duplicatelist.size()==0)
-                    System.out.println("All files are identical");
+                    JOptionPane.showMessageDialog(null, "All files are identical");
                 else
-                    System.out.println(duplicatelist.size()+" files are not identical");
+                    JOptionPane.showMessageDialog(null,duplicatelist.size()+" files are not identical");
+                    String temp="";
                 for (FileHash fileHash : duplicatelist) {
-                    System.out.println(fileHash.getPath().toString());
+                    temp+=fileHash.getPath().toString()+"\n";
                 }
-                break;
+                JOptionPane.showMessageDialog(null,temp);
+                
             }
             else if(choose.equals("SAVE")){
-                System.out.println("Enter a secure path: ");
-                String securePathName = scanner.nextLine();
-                System.out.println(filehashList.size());
+                //System.out.println("Enter a secure path: ");
+                //String securePathName = scanner.nextLine();
+                String securePathName = JOptionPane.showInputDialog("Enter a secure path");
+                //System.out.println(filehashList.size());
                 FileSave fileSave = new FileSave(securePathName, filehashList);
                 fileSave.FileallSave();
-                break;
+            
             }
             else if(choose.equals("BACKUP")){
-                System.out.println("Enter a secure path: ");
-                String securePathName = scanner.nextLine();
+                //System.out.println("Enter a secure path: ");
+                //String securePathName = scanner.nextLine();
+                String securePathName = JOptionPane.showInputDialog("Enter a secure path:");
                 SaveReader saveReader = new SaveReader(securePathName);
                 ArrayList<FileHash> listfromsave= saveReader.getSavedFiles();
                 ArrayList<FileHash> changedFiles = new ArrayList<FileHash>();
@@ -56,15 +62,21 @@ public class App {
                         changedFiles.add(filehashList.get(i));
                 }
                 if(changedFiles.size()==0) 
-                    System.out.println("All files are same with the save.");
+                    JOptionPane.showMessageDialog(null,"All file are same with the save");
+                    //System.out.println("All files are same with the save.");
+                else{
+                    JOptionPane.showMessageDialog(null,"All file are not same with the save");
+                
                 for (FileHash fileHash : changedFiles) {
-                    System.out.println(fileHash.getPath().toString()+" file is not same with the save.\n");                    
+                    String temp="";
+                    temp+=fileHash.getPath().toString()+" file is not same with the save.\n";                    
+                    JOptionPane.showMessageDialog(null, temp);
                 }
-                break;
+            
             }
-            System.out.println("Correct your choose.\n");
+            }
+
         }
-        scanner.close();
     }
 
 }
